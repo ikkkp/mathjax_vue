@@ -1,5 +1,3 @@
-// @ts-nocheck
-// mathJax全局配置文件
 window.MathJax = {
     tex: {
         inlineMath: [

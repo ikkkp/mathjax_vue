@@ -3,15 +3,11 @@
     <div id="frame">
       <!-- 实例1: -->
       <h1>MathJax v3: TeX &amp; MathML to HTML</h1>
-      <textarea id="input" rows="15" cols="10" v-model="test">
+      <textarea id="input" rows="15" cols="10" v-model="test" @input="convert()">
             <!--  Enter HTML containing TeX or MathML below -->
 
-            If $a \ne 0$, then $ax^2 + bx + c = 0$ has two solutions, $$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$
-            </textarea>
+            If $a \ne 0$, then $ax^2 + bx + c = 0$ has two solutions, $$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$</textarea>
       <br />
-      <div class="right">
-        <input id="render" type="button" value="Render HTML" @click="convert()" />
-      </div>
     </div>
 
     <div>{{str}}</div>
@@ -20,39 +16,23 @@
 </template>
 
 <script setup>
+import { computed, watch, ref } from "vue";
 
-import {computed, nextTick, onMounted, ref} from "vue";
 const test = ref("");
-const str = computed(() => `$$ ${test.value} $$`);
+const str = computed(() => {
+  return `$ ${test.value} $`;
+});
+
 function convert() {
+  // Your convert function logic
   MathJax.texReset();
   MathJax.typesetClear();
-  MathJax.typesetPromise()
-      .catch((err) => {
-        //
-        //  If there was an internal error, put the message into the output instead
-        //
-        output.innerHTML = "";
-        output
-            .appendChild(document.createElement("pre"))
-            .appendChild(document.createTextNode(err.message));
-      })
-      .then(() => {
-        //
-        //  Error or not, re-enable the render button
-        //
-        button.disabled = false;
-      });
+  MathJax.typesetPromise();
 }
 
-onMounted(() => {
-  nextTick(() => {
-    MathJax.texReset();
-    MathJax.typesetClear();
-    MathJax.typesetPromise().catch(err => {
-      str.value = err.message
-    });
-  });
+// 使用 watch 监听 computed 属性的变化
+watch(str, () => {
+  convert();
 });
 </script>
 
