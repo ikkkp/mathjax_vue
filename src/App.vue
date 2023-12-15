@@ -1,7 +1,6 @@
 <template>
   <div id="mytest">
     <div id="frame">
-      <!-- 实例1: -->
       <h1>MathJax v3: TeX &amp; MathML to HTML</h1>
       <textarea id="input" rows="15" cols="10" v-model="test" @input="convert()">
             <!--  Enter HTML containing TeX or MathML below -->
